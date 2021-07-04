@@ -1,24 +1,30 @@
 document.getElementById("currentDay").innerHTML =
   moment().format("dddd, MMMM do YYYY");
 
+const tasks = [];
 const textArea = document.querySelector("textarea").value;
-console.log("line 5", textArea);
+// console.log("line 5", textArea);
 
 // pass the textArea into the tasks array
 
-
 var timeBlock = document.getElementsByClassName("time-block");
-console.log(timeBlock)
+// console.log(timeBlock)
+$(".saveBtn").on("click", saveTask);
 
+function saveTask() {
+  tasks.push($(this).siblings(".description").val());
+  // console.log ("_____________________________________________________________")
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  // console.log(tasks);
+}
 
-var tasks = JSON.parse(localStorage.getItem("tasks"));
-console.log("does it pass through tasks?");
 
 function loadTasks() {
-  tasks = localStorage.getItem("tasks");
-  console.log(savedTasks);
+  var tasks = JSON.parse(localStorage.getItem("tasks"));
+  // console.log("does it pass through tasks?");
+  console.log(tasks);
   if (!tasks) {
-    tasks = [
+    savedTasks = [
       {
         time: "8a",
         task: "",
@@ -60,18 +66,11 @@ function loadTasks() {
         task: "",
       },
     ];
+    return false;
   }
+  // tasks = JSON.parse(tasks);
+  console.log(tasks)
 }
-
-$(".saveBtn").on("click", saveTask);
-
-function saveTask() {
-  console.log($(this).siblings(".description").val());
-  console.log ("_____________________________________________________________")
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  console.log(tasks);
-}
-
 
 // ----------------TODO------------------
 // WHEN I click the save button for that time block
@@ -80,21 +79,17 @@ function saveTask() {
 // THEN the saved events persist
 
 for (let i = 0; i < timeBlock.length; i++) {
-  // var now = moment()
-  var now = moment("12", "h");
-  // console.log(now);
+  var now = moment().hour();
   const element = timeBlock[i];
-  // console.log(element.id);
   var parse = moment(element.id, "hA");
-  console.log(parse.isBefore(now));
   if (parse.isBefore(moment(now, "h"))) {
-    // console.log("cats hate dogs");
     element.classList.add("past");
-  } else if (parse.isSame(now, "h")) {
+  } else if (parse.isSame(moment(), "hour")) {
     element.classList.add("present");
   } else if (parse.isAfter(now, "h")) {
     element.classList.add("future");
   } else {
-    // console.log("none of the above");
+    console.log("none of the above");
   }
 }
+loadTasks();
