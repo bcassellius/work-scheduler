@@ -8,7 +8,6 @@ const textArea = document.querySelector("textarea").value;
 
 for (let i = 0; i < timeBlock.length; i++) {
     var now = moment().hour();
-    console.log(now)
     const element = timeBlock[i];
     var parse = moment(element.id, "hA");
     if (parse.isBefore(moment(now, "h"))) {
@@ -23,22 +22,22 @@ for (let i = 0; i < timeBlock.length; i++) {
 }
   
 $(".saveBtn").on("click", saveTask);
-console.log("please work")
 function saveTask(){
         const key = $(this).parent().attr('id')
-        const value = document.querySelector("textarea").value;    
-        tasks = {...tasks, [key]: value}
-        console.log(tasks)
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        const value = $(this).siblings(".description").val();    
+        const updatedTasks = {...tasks, [key]: value}
+        tasks = updatedTasks
+        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        console.log(updatedTasks)
 }
 
 function loadTasks(){
-    let tasks = JSON.parse(localStorage.getItem("tasks"));
-    console.log(tasks)
-    localStorage.getItem("tasks", JSON.stringify(tasks));
+    const updatedTasks = JSON.parse(localStorage.getItem("tasks"));
+    // const updatedTasks = JSON.parse(localStorage.getItem("tasks"));
+    console.log(updatedTasks)
     if (!tasks){
         const key = $(this).parent().attr('id')
-        const value = "";    
+        const value = $(this).siblings(".description").val();    
         tasks = {...tasks, [key]: value}
     } 
 }
