@@ -1,5 +1,5 @@
 document.getElementById("currentDay").innerHTML =
-moment().format("dddd, MMMM do YYYY");
+moment().format('dddd, ' + 'MMMM Do YYYY');
 
 var timeBlock = document.getElementsByClassName("time-block");
 let tasks = JSON.parse(localStorage.getItem("tasks"));
